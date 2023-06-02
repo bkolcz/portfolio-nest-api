@@ -7,7 +7,7 @@ import { jwtConstants } from './constants';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '../users/user.entity';
+import { User } from '../users/entities/user.entity';
 import { AuthModule } from './auth.module';
 import { UsersService } from '../users/users.service';
 

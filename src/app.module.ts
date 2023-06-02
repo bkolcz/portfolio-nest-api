@@ -15,7 +15,7 @@ import { DataSource } from 'typeorm';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db-local.sqlite',
-      entities: [],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // comment it if production env
     }
     ),

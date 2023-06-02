@@ -1,30 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
 import { Repository } from 'typeorm';
-
-const bcrypt = require('bcrypt');
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-    constructor(
-        @InjectRepository(User)
-        private usersRepository: Repository<User>,
-    ) { }
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) { }
 
-    findAll(): Promise<User[]> {
-        return this.usersRepository.find();
-    }
+  create(createUserDto: CreateUserDto) {
+    return this.usersRepository.save({...createUserDto});
+  }
 
-    findOneById(id: number): Promise<User | null> {
-        return this.usersRepository.findOneBy({ id });
-    }
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return this.usersRepository.update(id, updateUserDto);
+  }
 
-    findOneByUsername(username: string): Promise<User | null> {
-        return this.usersRepository.findOneBy({ username });
-    }
+  findAll(): Promise<User[]> {
+    return this.usersRepository.find();
+  }
 
-    async remove(id: number): Promise<void> {
-        await this.usersRepository.delete(id);
-    }
+  findOneById(id: number): Promise<User | null> {
+    return this.usersRepository.findOneBy({ id });
+  }
+
+  findOneByUsername(username: string): Promise<User | null> {
+    return this.usersRepository.findOneBy({ username });
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.usersRepository.delete(id);
+  }
 }
