@@ -1,8 +1,8 @@
 {
   "name": "portfolio-nest-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "API for presentation purposes",
+  "author": "Bartłomiej Kołcz",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
