@@ -1,13 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './users.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
+import { Repository } from 'typeorm';
 
 const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {
-    async findOne(username: string): Promise<User | undefined> {
-        // TODO not hardcoded users
-        // return {userId: 1, username: username, password: await bcrypt.hash('admin',10)};
-        return {userId: 1, username: username, password: 'admin'};
+    constructor(
+        @InjectRepository(User)
+        private usersRepository: Repository<User>,
+    ) { }
+
+    findAll(): Promise<User[]> {
+        return this.usersRepository.find();
+    }
+
+    findOneById(id: number): Promise<User | null> {
+        return this.usersRepository.findOneBy({ id });
+    }
+
+    findOneByUsername(username: string): Promise<User | null> {
+        return this.usersRepository.findOneBy({ username });
+    }
+
+    async remove(id: number): Promise<void> {
+        await this.usersRepository.delete(id);
     }
 }
