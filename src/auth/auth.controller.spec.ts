@@ -6,28 +6,24 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { User } from '../users/user.entity';
+import { AuthModule } from './auth.module';
+import { UsersService } from '../users/users.service';
 
 describe('AuthController', () => {
+  const mockAuthService = {};
   let controller: AuthController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        UsersModule,
-        JwtModule.register({
-          global: true,
-          secret: jwtConstants.secret,
-          signOptions: { expiresIn: '60s' }
-        }),
-      ],
       controllers: [AuthController],
       providers: [
-        AuthService,
         {
-          provide: APP_GUARD,
-          useClass: AuthGuard,
+          provide: AuthService,
+          useValue: mockAuthService
         }
-      ]
+      ],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
