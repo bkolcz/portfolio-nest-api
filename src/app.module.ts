@@ -7,18 +7,33 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { TreeNodesModule } from './tree-nodes/tree-nodes.module';
+import { User } from './users/entities/user.entity';
+import { TreeNode } from './tree-nodes/entities/tree-node.entity';
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
     TypeOrmModule.forRoot({
+      name: 'users',
       type: 'sqlite',
       database: 'db-local.sqlite',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      // entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [User],
       synchronize: true, // comment it if production env
     }
     ),
+    TreeNodesModule,
+    TypeOrmModule.forRoot({
+      name: 'tree-nodes',
+      type: 'sqlite',
+      database: 'db-tree-nodes.sqlite',
+      entities: [TreeNode],
+      synchronize: true,
+    }),
+    TypeOrmModule.forFeature([User], 'users'),
+    TypeOrmModule.forFeature([TreeNode], 'tree-nodes')
   ],
   controllers: [AppController],
   providers: [
@@ -30,5 +45,5 @@ import { DataSource } from 'typeorm';
   ],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) { }
+  // constructor(private dataSource: DataSource) { }
 }
