@@ -49,6 +49,10 @@ export class TreeNodesService {
     return (await this.treeNodesRepository.find({ order: { id: "DESC" }, take: 1 })).pop();
   }
 
+  async lastIndex(): Promise<{ lastIndex: number } | null> {
+    return { lastIndex: ((await this.treeNodesRepository.find({ order: { id: "DESC" }, take: 1 })).pop()).id };
+  }
+
   async supplyNodes(createTreeNodeDtos: CreateTreeNodeDto[]): Promise<TreeNode[]> {
     for (const node of createTreeNodeDtos) {
       await this.treeNodesRepository.save({ ...node });

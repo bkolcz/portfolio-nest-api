@@ -53,4 +53,9 @@ export class TreeNodesController {
   lastElement() {
     return this.treeNodesService.lastElement();
   }
+
+  @Get('/last-element/index')
+  lastIndex() {
+    return this.treeNodesService.lastIndex();
+  }
 }
