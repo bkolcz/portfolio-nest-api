@@ -34,7 +34,7 @@ export class TreeNodesController {
     return this.treeNodesService.remove(+id);
   }
 
-  @Delete('/deletetree/:id')
+  @Delete('/delete-tree/:id')
   removeTreeNodes(@Param('id') id: string) {
     return this.treeNodesService.removeTreeNodes(+id);
   }
@@ -49,8 +49,8 @@ export class TreeNodesController {
     return this.treeNodesService.supplyNodes(createTreeNodeDtos);
   }
 
-  @Get('/lastindex')
-  lastIndex() {
-    return this.treeNodesService.lastIndex();
+  @Get('/last-element/item')
+  lastElement() {
+    return this.treeNodesService.lastElement();
   }
 }

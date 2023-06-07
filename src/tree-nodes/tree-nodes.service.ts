@@ -32,21 +32,21 @@ export class TreeNodesService {
     return this.treeNodesRepository.delete(id);
   }
 
-  async removeTreeNodes(id: number): Promise<DeleteResult[]> {
-    let nextDelete: string = `${id}`;
-    const results: DeleteResult[] = [];
-    do {
-      const result = await this.treeNodesRepository.delete(+nextDelete);
-      results.push(result);
-      const nodeToDelete: TreeNode | null = await this.treeNodesRepository.findOneBy({ parentId: `${id}` });
-      nextDelete = `${nodeToDelete?.id??""}`;
-    } while (nextDelete !== "")
-
-    return results;
+  async removeTreeNodes(id: number): Promise<DeleteResult> {
+    const result: DeleteResult = await this.treeNodesRepository.delete(id);
+    const nodesToDelete: TreeNode[] | null = await this.treeNodesRepository.findBy({ parentId: id });
+    if (nodesToDelete.length === 0) {
+      return result;
+    } else {
+      for (const node of nodesToDelete) {
+        await this.removeTreeNodes(node.id);
+      }
+    }
+    return result;
   }
 
-  async lastIndex(): Promise<{last_index: number}> {
-    return { last_index: await this.treeNodesRepository.maximum("id") };
+  async lastElement(): Promise<TreeNode | null> {
+    return (await this.treeNodesRepository.find({ order: { id: "DESC" }, take: 1 })).pop();
   }
 
   async supplyNodes(createTreeNodeDtos: CreateTreeNodeDto[]): Promise<TreeNode[]> {

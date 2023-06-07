@@ -6,8 +6,9 @@ export class TreeNode {
     id: number;
 
     @Column()
-    name: string;
-    
+    parentId: number;
+
     @Column()
-    parentId: string;
+    name: string;
+
 }
